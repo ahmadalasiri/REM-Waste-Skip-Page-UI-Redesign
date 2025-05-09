@@ -5,11 +5,9 @@ import { useSkips } from "../hooks/useSkips";
 import type { StepProps } from "../types";
 
 export const SkipSelectionPage = () => {
-  // In a real app, these would come from route params or context
   const postcode = "NR32";
   const area = "Lowestoft";
   const [darkMode, setDarkMode] = useState(() => {
-    // Check for saved preference, otherwise default to light mode
     const saved = localStorage.getItem("darkMode");
     return saved ? JSON.parse(saved) : false;
   });

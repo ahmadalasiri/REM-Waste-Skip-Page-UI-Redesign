@@ -32,7 +32,7 @@ export const SkipCard = ({
             : "hover:shadow-lg hover:scale-[1.01]"
         }`}
     >
-      <div className="relative pb-[75%] bg-gray-100">
+      <div className="relative pb-[60%] sm:pb-[75%] bg-gray-100">
         <img
           src={`/skips/${skip.size}yard.png`}
           alt={`${skip.size} Yard Skip`}
@@ -43,80 +43,86 @@ export const SkipCard = ({
         />
       </div>
 
-      <div className="p-5 flex flex-col flex-grow">
-        <h3
-          className={`text-xl font-bold ${
-            darkMode ? "text-white" : "text-gray-900"
-          }`}
-        >
-          {skip.size} Yard Skip
-        </h3>
-        <p
-          className={`${
-            darkMode ? "text-gray-300" : "text-gray-700"
-          } text-sm mb-1`}
-        >
-          {skip.size <= 6
-            ? `${skip.size - 1}-${skip.size}`
-            : `${skip.size - 2}-${skip.size}`}{" "}
-          Yards Capacity
-        </p>
-
-        <p
-          className={`${
-            darkMode ? "text-gray-300" : "text-gray-700"
-          } text-sm mb-4`}
-        >
-          {skip.hire_period_days} Days Hire
-        </p>
-
-        {skip.allowed_on_road ? (
-          <div
-            className={`bg-emerald-50 ${
-              darkMode ? "text-emerald-300" : "text-emerald-700"
-            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
-          >
-            Road Placement OK
+      <div className="p-3 sm:p-5 flex flex-col flex-grow">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3
+              className={`text-lg sm:text-xl font-bold ${
+                darkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {skip.size} Yard Skip
+            </h3>
+            <p
+              className={`${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              } text-xs sm:text-sm mb-1`}
+            >
+              {skip.size <= 6
+                ? `${skip.size - 1}-${skip.size}`
+                : `${skip.size - 2}-${skip.size}`}{" "}
+              Yards Capacity
+            </p>
           </div>
-        ) : (
-          <div
-            className={`bg-amber-50 ${
-              darkMode ? "text-amber-300" : "text-amber-700"
-            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
-          >
-            Not for Road Placement
-          </div>
-        )}
 
-        {skip.allows_heavy_waste ? (
-          <div
-            className={`bg-emerald-50 ${
-              darkMode ? "text-emerald-300" : "text-emerald-700"
-            } text-sm font-medium py-2 px-4 rounded-full mb-3 text-center`}
-          >
-            Heavy Waste Allowed
-          </div>
-        ) : (
-          <div
-            className={`bg-amber-50 ${
-              darkMode ? "text-amber-300" : "text-amber-700"
-            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
-          >
-            Heavy Waste Not Permitted
-          </div>
-        )}
-
-        <div className="mt-auto">
           <p
-            className={`text-3xl font-bold ${
+            className={`text-2xl sm:text-3xl font-bold ${
               darkMode ? "text-white" : "text-gray-900"
             }`}
           >
             £{price}
           </p>
+        </div>
 
+        <p
+          className={`${
+            darkMode ? "text-gray-300" : "text-gray-700"
+          } text-xs sm:text-sm mb-3 sm:mb-4`}
+        >
+          {skip.hire_period_days} Days Hire
+        </p>
+
+        <div className="flex flex-wrap gap-2 mb-3">
+          {skip.allowed_on_road ? (
+            <div
+              className={`bg-emerald-50 ${
+                darkMode ? "text-emerald-300" : "text-emerald-700"
+              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+            >
+              Road Placement OK
+            </div>
+          ) : (
+            <div
+              className={`bg-amber-50 ${
+                darkMode ? "text-amber-300" : "text-amber-700"
+              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+            >
+              Not for Road Placement
+            </div>
+          )}
+
+          {skip.allows_heavy_waste ? (
+            <div
+              className={`bg-emerald-50 ${
+                darkMode ? "text-emerald-300" : "text-emerald-700"
+              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+            >
+              Heavy Waste Allowed
+            </div>
+          ) : (
+            <div
+              className={`bg-amber-50 ${
+                darkMode ? "text-amber-300" : "text-amber-700"
+              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+            >
+              Heavy Waste Not Permitted
+            </div>
+          )}
+        </div>
+
+        <div className="mt-auto">
           <div
-            className={`w-full mt-4 py-3 px-4 rounded-md text-center font-medium transition-all
+            className={`w-full mt-2 sm:mt-4 py-2 sm:py-3 px-3 sm:px-4 rounded-md text-center font-medium transition-all text-sm sm:text-base
               ${
                 isSelected
                   ? "bg-blue-700 text-white flex items-center justify-center"
@@ -131,7 +137,7 @@ export const SkipCard = ({
               <>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-1.5"
+                  className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >

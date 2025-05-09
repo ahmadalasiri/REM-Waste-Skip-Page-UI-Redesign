@@ -111,7 +111,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
           {steps.map((step, index) => (
             <div
               key={step.step}
-              className="flex flex-col items-center relative"
+              className="flex flex-col items-center relative group"
             >
               {/* Connection line */}
               {index > 0 && (
@@ -126,7 +126,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
 
               {/* Step Circle with Icon */}
               <div
-                className={`flex items-center justify-center w-8 h-8 rounded-full 
+                className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full 
                   ${
                     step.status === "completed"
                       ? "bg-blue-500 text-white"
@@ -138,7 +138,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
                 {step.status === "completed" ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -153,9 +153,9 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
                 )}
               </div>
 
-              {/* Step Label */}
+              {/* Step Label - Hidden on mobile, visible on hover/focus and larger screens */}
               <span
-                className={`mt-2 text-xs font-medium
+                className={`mt-2 text-xs font-medium hidden sm:inline-block group-hover:inline-block
                   ${
                     step.status === "completed" || step.status === "current"
                       ? "text-gray-900"
@@ -164,6 +164,11 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
               >
                 {step.step}
               </span>
+
+              {/* Mobile tooltip */}
+              <div className="absolute -bottom-8 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:hidden whitespace-nowrap">
+                {step.step}
+              </div>
             </div>
           ))}
         </div>

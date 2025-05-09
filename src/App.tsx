@@ -1,4 +1,3 @@
-import "./App.css";
 import { SkipSelectionPage } from "./pages/SkipSelectionPage";
 
 function App() {
