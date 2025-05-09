@@ -15,6 +15,10 @@ export const SkipCard = ({ skip, isSelected, onSelect }: SkipCardProps) => {
     ? "Not Allowed On The Road"
     : undefined;
 
+  // Default fallback image URL
+  const fallbackImageUrl =
+    "https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg";
+
   return (
     <div
       className={`relative flex flex-col overflow-hidden bg-white rounded-lg shadow-md transition-all
@@ -36,38 +40,39 @@ export const SkipCard = ({ skip, isSelected, onSelect }: SkipCardProps) => {
           alt={`${skip.size} Yard Skip`}
           className="w-full h-full object-contain"
           onError={(e) => {
-            // Fallback to a default skip image if specific one doesn't exist
-            e.currentTarget.src = `/skips/default-skip.png`;
+            // Use the provided fallback image URL
+            e.currentTarget.src = fallbackImageUrl;
           }}
         />
       </div>
-
-      {/* Restriction Warning Badge if present */}
-      {restriction && (
-        <div className="absolute bottom-[6.5rem] left-0 right-0 flex items-center justify-center">
-          <div className="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-2 text-xs flex items-center gap-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            {restriction}
-          </div>
-        </div>
-      )}
 
       {/* Skip Information */}
       <div className="p-4 flex flex-col flex-grow">
         <h3 className="text-lg font-bold text-gray-800">
           {skip.size} Yard Skip
         </h3>
+
+        {/* Restriction Warning - Moved here to match design */}
+        {restriction && (
+          <div className="mb-2 mt-1">
+            <div className="bg-amber-100 border-l-4 border-amber-500 text-amber-700 py-1 px-2 text-xs flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              {restriction}
+            </div>
+          </div>
+        )}
+
         <p className="text-sm text-gray-500 mb-2">
           {skip.hire_period_days} day hire period
         </p>
