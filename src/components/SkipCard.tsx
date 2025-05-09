@@ -15,50 +15,61 @@ export const SkipCard = ({ skip, isSelected, onSelect }: SkipCardProps) => {
     ? "Not Allowed On The Road"
     : undefined;
 
-  // Default fallback image URL
-  const fallbackImageUrl =
-    "https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg";
+  // Use local placeholder SVG instead of remote URL
+  const fallbackImageUrl = "/placeholder.svg";
 
   return (
     <div
-      className={`relative flex flex-col overflow-hidden bg-white rounded-lg shadow-md transition-all
+      className={`relative flex flex-col overflow-hidden bg-white rounded-xl shadow-md transition-all duration-300
         ${
           isSelected
-            ? "ring-2 ring-blue-600 transform scale-[1.02]"
+            ? "ring-2 ring-amber-400 transform scale-[1.02] shadow-lg shadow-amber-200"
             : "hover:shadow-lg"
         }`}
     >
-      {/* Size Badge */}
-      <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-        {skip.size} Yards
+      {/* Road Placement Badge */}
+      <div
+        className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full ${
+          skip.allowed_on_road
+            ? "bg-green-500 text-white"
+            : "bg-red-500 text-white"
+        }`}
+      >
+        {skip.allowed_on_road ? "Road Placement OK" : "Not for Road Placement"}
       </div>
 
       {/* Skip Image */}
-      <div className="h-40 overflow-hidden bg-gray-100">
+      <div className="h-48 overflow-hidden bg-gray-50 p-4 flex items-center justify-center">
         <img
           src={`/skips/${skip.size}yard.png`}
           alt={`${skip.size} Yard Skip`}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain transition-transform hover:scale-105"
           onError={(e) => {
-            // Use the provided fallback image URL
+            // Use the local placeholder SVG
             e.currentTarget.src = fallbackImageUrl;
           }}
         />
       </div>
 
       {/* Skip Information */}
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-gray-800">
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold text-gray-800">
           {skip.size} Yard Skip
         </h3>
+        <p className="text-gray-600 text-sm mb-2">
+          {skip.size <= 6
+            ? `${skip.size - 1}-${skip.size}`
+            : `${skip.size - 2}-${skip.size}`}{" "}
+          Yards Capacity
+        </p>
 
-        {/* Restriction Warning - Moved here to match design */}
-        {restriction && (
-          <div className="mb-2 mt-1">
-            <div className="bg-amber-100 border-l-4 border-amber-500 text-amber-700 py-1 px-2 text-xs flex items-center gap-1">
+        {/* Skip warnings if needed */}
+        {!skip.allowed_on_road && (
+          <div className="mb-3 mt-1">
+            <div className="bg-red-50 border-l-4 border-red-500 text-red-700 py-1.5 px-3 text-xs rounded-r-md flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
+                className="h-4 w-4 flex-shrink-0"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -73,24 +84,47 @@ export const SkipCard = ({ skip, isSelected, onSelect }: SkipCardProps) => {
           </div>
         )}
 
-        <p className="text-sm text-gray-500 mb-2">
-          {skip.hire_period_days} day hire period
-        </p>
-        <p className="text-xl font-bold text-blue-600 mt-auto">£{price}</p>
-      </div>
+        {skip.allows_heavy_waste && (
+          <div className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-3">
+            Heavy Waste Allowed
+          </div>
+        )}
 
-      {/* Select Button */}
-      <button
-        onClick={() => onSelect(skip.id)}
-        className={`p-2 m-4 mt-0 rounded-md text-center text-sm font-medium transition-colors
-          ${
-            isSelected
-              ? "bg-blue-600 text-white"
-              : "bg-white border border-blue-600 text-blue-600 hover:bg-blue-50"
-          }`}
-      >
-        {isSelected ? "Selected" : "Select This Skip"}
-      </button>
+        <div className="flex items-center mb-3 text-sm text-gray-600">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-1.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          {skip.hire_period_days} Days
+        </div>
+
+        <div className="mt-auto">
+          <p className="text-2xl font-bold text-gray-800">£{price}</p>
+
+          {/* Select Button */}
+          <button
+            onClick={() => onSelect(skip.id)}
+            className={`w-full mt-4 py-2.5 px-4 rounded-md text-center font-medium transition-all
+              ${
+                isSelected
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+              }`}
+          >
+            {isSelected ? "Selected" : "Select This Skip"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
