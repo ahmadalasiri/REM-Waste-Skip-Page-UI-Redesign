@@ -9,11 +9,9 @@ export const SkipSelectionPage = () => {
   const postcode = "NR32";
   const area = "Lowestoft";
   const [darkMode, setDarkMode] = useState(() => {
-    // Check for saved preference or system preference
+    // Check for saved preference, otherwise default to light mode
     const saved = localStorage.getItem("darkMode");
-    return saved
-      ? JSON.parse(saved)
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return saved ? JSON.parse(saved) : false;
   });
 
   useEffect(() => {
