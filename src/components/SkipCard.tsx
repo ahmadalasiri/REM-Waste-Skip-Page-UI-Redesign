@@ -7,7 +7,12 @@ interface SkipCardProps {
   darkMode?: boolean;
 }
 
-export const SkipCard = ({ skip, isSelected, onSelect, darkMode = false }: SkipCardProps) => {
+export const SkipCard = ({
+  skip,
+  isSelected,
+  onSelect,
+  darkMode = false,
+}: SkipCardProps) => {
   // Calculate price including VAT
   const price = Math.round(skip.price_before_vat * (1 + skip.vat / 100));
 
@@ -18,7 +23,9 @@ export const SkipCard = ({ skip, isSelected, onSelect, darkMode = false }: SkipC
   return (
     <div
       onClick={() => onSelect(skip.id)}
-      className={`relative flex flex-col overflow-hidden ${darkMode ? 'bg-gray-800 text-white' : 'bg-white'} rounded-xl shadow-md transition-all duration-300 cursor-pointer
+      className={`relative flex flex-col overflow-hidden ${
+        darkMode ? "bg-gray-800 text-white" : "bg-white"
+      } rounded-xl shadow-md transition-all duration-300 cursor-pointer
         ${
           isSelected
             ? "ring-2 ring-blue-700 transform scale-[1.02] shadow-lg shadow-blue-50"
@@ -37,45 +44,79 @@ export const SkipCard = ({ skip, isSelected, onSelect, darkMode = false }: SkipC
       </div>
 
       <div className="p-5 flex flex-col flex-grow">
-        <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+        <h3
+          className={`text-xl font-bold ${
+            darkMode ? "text-white" : "text-gray-900"
+          }`}
+        >
           {skip.size} Yard Skip
         </h3>
-        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-sm mb-1`}>
+        <p
+          className={`${
+            darkMode ? "text-gray-300" : "text-gray-700"
+          } text-sm mb-1`}
+        >
           {skip.size <= 6
             ? `${skip.size - 1}-${skip.size}`
             : `${skip.size - 2}-${skip.size}`}{" "}
           Yards Capacity
         </p>
 
-        <p className={`${darkMode ? 'text-gray-300' : 'text-gray-700'} text-sm mb-4`}>
+        <p
+          className={`${
+            darkMode ? "text-gray-300" : "text-gray-700"
+          } text-sm mb-4`}
+        >
           {skip.hire_period_days} Days Hire
         </p>
 
         {skip.allowed_on_road ? (
-          <div className={`bg-emerald-50 ${darkMode ? 'text-emerald-300' : 'text-emerald-700'} text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}>
+          <div
+            className={`bg-emerald-50 ${
+              darkMode ? "text-emerald-300" : "text-emerald-700"
+            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
+          >
             Road Placement OK
           </div>
         ) : (
-          <div className={`bg-amber-50 ${darkMode ? 'text-amber-300' : 'text-amber-700'} text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}>
+          <div
+            className={`bg-amber-50 ${
+              darkMode ? "text-amber-300" : "text-amber-700"
+            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
+          >
             Not for Road Placement
           </div>
         )}
 
         {skip.allows_heavy_waste && (
-          <div className={`bg-emerald-50 ${darkMode ? 'text-emerald-300' : 'text-emerald-700'} text-sm font-medium py-2 px-4 rounded-full mb-3 text-center`}>
+          <div
+            className={`bg-emerald-50 ${
+              darkMode ? "text-emerald-300" : "text-emerald-700"
+            } text-sm font-medium py-2 px-4 rounded-full mb-3 text-center`}
+          >
             Heavy Waste Allowed
           </div>
         )}
 
         <div className="mt-auto">
-          <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>£{price}</p>
+          <p
+            className={`text-3xl font-bold ${
+              darkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            £{price}
+          </p>
 
           <div
             className={`w-full mt-4 py-3 px-4 rounded-md text-center font-medium transition-all
               ${
                 isSelected
                   ? "bg-blue-700 text-white flex items-center justify-center"
-                  : `${darkMode ? 'bg-blue-900 text-blue-300 hover:bg-blue-800' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}`
+                  : `${
+                      darkMode
+                        ? "bg-blue-900 text-blue-300 hover:bg-blue-800"
+                        : "bg-blue-50 text-blue-700 hover:bg-blue-100"
+                    }`
               }`}
           >
             {isSelected ? (
