@@ -88,13 +88,21 @@ export const SkipCard = ({
           </div>
         )}
 
-        {skip.allows_heavy_waste && (
+        {skip.allows_heavy_waste ? (
           <div
             className={`bg-emerald-50 ${
               darkMode ? "text-emerald-300" : "text-emerald-700"
             } text-sm font-medium py-2 px-4 rounded-full mb-3 text-center`}
           >
             Heavy Waste Allowed
+          </div>
+        ) : (
+          <div
+            className={`bg-amber-50 ${
+              darkMode ? "text-amber-300" : "text-amber-700"
+            } text-sm py-2 px-4 rounded-full mb-3 font-medium text-center`}
+          >
+            Heavy Waste Not Permitted
           </div>
         )}
 

@@ -8,7 +8,6 @@ export const SkipSelectionPage = () => {
   // In a real app, these would come from route params or context
   const postcode = "NR32";
   const area = "Lowestoft";
-  const [sortBy, setSortBy] = useState<"size" | "price">("size");
   const [darkMode, setDarkMode] = useState(() => {
     // Check for saved preference or system preference
     const saved = localStorage.getItem("darkMode");
@@ -52,19 +51,6 @@ export const SkipSelectionPage = () => {
     // In a real app, this would navigate to the previous step
     alert("Going back to Waste Type step");
   };
-
-  // Sort skips based on selected criteria
-  const sortedSkips = skips
-    ? [...skips].sort((a, b) => {
-        if (sortBy === "size") {
-          return a.size - b.size;
-        } else {
-          const priceA = a.price_before_vat * (1 + a.vat / 100);
-          const priceB = b.price_before_vat * (1 + b.vat / 100);
-          return priceA - priceB;
-        }
-      })
-    : [];
 
   return (
     <div
@@ -159,44 +145,6 @@ export const SkipSelectionPage = () => {
           </p>
         </div>
 
-        {/* Sort options */}
-        {!loading && skips && skips.length > 0 && (
-          <div className="flex justify-end mb-6">
-            <div className="inline-flex rounded-md shadow-sm" role="group">
-              <button
-                type="button"
-                onClick={() => setSortBy("size")}
-                className={`px-4 py-2 text-sm font-medium rounded-l-lg border transition-colors duration-300 ${
-                  sortBy === "size"
-                    ? darkMode
-                      ? "bg-blue-700 text-white border-blue-700"
-                      : "bg-blue-600 text-white border-blue-600"
-                    : darkMode
-                    ? "bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                Sort by Size
-              </button>
-              <button
-                type="button"
-                onClick={() => setSortBy("price")}
-                className={`px-4 py-2 text-sm font-medium rounded-r-lg border transition-colors duration-300 ${
-                  sortBy === "price"
-                    ? darkMode
-                      ? "bg-blue-700 text-white border-blue-700"
-                      : "bg-blue-600 text-white border-blue-600"
-                    : darkMode
-                    ? "bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                Sort by Price
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-20">
@@ -220,7 +168,7 @@ export const SkipSelectionPage = () => {
         {/* Skip Cards */}
         {!loading && !error && skips && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sortedSkips.map((skip) => (
+            {skips.map((skip) => (
               <SkipCard
                 key={skip.id}
                 skip={skip}
