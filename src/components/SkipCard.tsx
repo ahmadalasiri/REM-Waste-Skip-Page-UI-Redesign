@@ -53,16 +53,6 @@ export const SkipCard = ({
             >
               {skip.size} Yard Skip
             </h3>
-            <p
-              className={`${
-                darkMode ? "text-gray-300" : "text-gray-700"
-              } text-xs sm:text-sm mb-1`}
-            >
-              {skip.size <= 6
-                ? `${skip.size - 1}-${skip.size}`
-                : `${skip.size - 2}-${skip.size}`}{" "}
-              Yards Capacity
-            </p>
           </div>
 
           <p
@@ -83,41 +73,33 @@ export const SkipCard = ({
         </p>
 
         <div className="flex flex-wrap gap-2 mb-3">
-          {skip.allowed_on_road ? (
-            <div
-              className={`bg-emerald-50 ${
-                darkMode ? "text-emerald-300" : "text-emerald-700"
-              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-            >
-              Road Placement OK
-            </div>
-          ) : (
-            <div
-              className={`bg-amber-50 ${
-                darkMode ? "text-amber-300" : "text-amber-700"
-              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-            >
-              Not for Road Placement
-            </div>
-          )}
+          <div
+            className={`${
+              skip.allowed_on_road
+                ? `bg-emerald-50 ${
+                    darkMode ? "text-emerald-300" : "text-emerald-700"
+                  }`
+                : `bg-amber-50 ${
+                    darkMode ? "text-amber-300" : "text-amber-700"
+                  }`
+            } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+          >
+            {skip.allowed_on_road ? "Road Placement OK" : "No Road Placement"}
+          </div>
 
-          {skip.allows_heavy_waste ? (
-            <div
-              className={`bg-emerald-50 ${
-                darkMode ? "text-emerald-300" : "text-emerald-700"
-              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-            >
-              Heavy Waste Allowed
-            </div>
-          ) : (
-            <div
-              className={`bg-amber-50 ${
-                darkMode ? "text-amber-300" : "text-amber-700"
-              } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-            >
-              Heavy Waste Not Permitted
-            </div>
-          )}
+          <div
+            className={`${
+              skip.allows_heavy_waste
+                ? `bg-emerald-50 ${
+                    darkMode ? "text-emerald-300" : "text-emerald-700"
+                  }`
+                : `bg-amber-50 ${
+                    darkMode ? "text-amber-300" : "text-amber-700"
+                  }`
+            } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
+          >
+            {skip.allows_heavy_waste ? "Heavy Waste Allowed" : "No Heavy Waste"}
+          </div>
         </div>
 
         <div className="mt-auto">
