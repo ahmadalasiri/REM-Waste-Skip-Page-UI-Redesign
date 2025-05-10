@@ -41,7 +41,7 @@ export const SkipSelectionPage = () => {
 
   return (
     <div
-      className={`min-h-screen pb-16 sm:pb-0 ${
+      className={`min-h-screen pb-24 sm:pb-20 ${
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-800"
       } transition-colors duration-300`}
     >
@@ -166,20 +166,22 @@ export const SkipSelectionPage = () => {
             ))}
           </div>
         )}
+      </div>
 
-        {/* Desktop Navigation Buttons */}
-        <div
-          className={`mt-8 sm:mt-10 hidden sm:flex justify-between items-center transition-colors duration-300 ${
-            darkMode
-              ? "border-t border-gray-700 pt-4 sm:pt-6"
-              : "border-t border-gray-200 pt-4 sm:pt-6"
-          }`}
-        >
+      {/* Desktop Navigation Buttons - Now sticky */}
+      <div
+        className={`hidden sm:flex justify-between items-center fixed bottom-0 left-0 right-0 py-4 px-6 shadow-lg z-10 transition-colors duration-300 ${
+          darkMode
+            ? "bg-gray-800/95 border-t border-gray-700 backdrop-blur-sm"
+            : "bg-white/95 border-t border-gray-200 backdrop-blur-sm"
+        }`}
+      >
+        <div className="container mx-auto max-w-7xl flex justify-between px-4 lg:px-8">
           <button
             onClick={handleBack}
-            className={`px-4 py-2 text-sm font-medium rounded-lg border transition-colors duration-300 ${
+            className={`px-6 py-3 text-sm font-medium rounded-lg border transition-colors duration-300 ${
               darkMode
-                ? "bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700"
+                ? "bg-gray-700 text-gray-200 border-gray-600 hover:bg-gray-600"
                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
             }`}
           >
@@ -189,7 +191,7 @@ export const SkipSelectionPage = () => {
           <button
             onClick={handleContinue}
             disabled={!selectedSkip}
-            className={`px-6 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+            className={`px-8 py-3 text-sm font-medium rounded-lg transition-all duration-300 ${
               !selectedSkip
                 ? darkMode
                   ? "bg-gray-700 text-gray-400 cursor-not-allowed"
