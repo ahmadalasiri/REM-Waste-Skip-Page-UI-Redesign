@@ -176,7 +176,7 @@ export const SkipSelectionPage = () => {
             : "bg-white/95 border-t border-gray-200 backdrop-blur-sm"
         }`}
       >
-        <div className="container mx-auto max-w-7xl flex justify-between px-4 lg:px-8">
+        <div className="container mx-auto max-w-7xl flex justify-between items-center px-4 lg:px-8">
           <button
             onClick={handleBack}
             className={`px-6 py-3 text-sm font-medium rounded-lg border transition-colors duration-300 ${
@@ -187,6 +187,42 @@ export const SkipSelectionPage = () => {
           >
             Back
           </button>
+
+          {/* Selection status in middle */}
+          <div className="flex-1 text-center mx-4">
+            {selectedSkip && selectedSkipDetails ? (
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center">
+                  <span
+                    className={`font-semibold mr-1 ${
+                      darkMode ? "text-blue-300" : "text-blue-600"
+                    }`}
+                  >
+                    {selectedSkipDetails.size} Yard Skip
+                  </span>
+                  <span
+                    className={`text-sm font-medium ml-1.5 ${
+                      darkMode ? "text-green-300" : "text-green-600"
+                    }`}
+                  >
+                    £
+                    {Math.round(
+                      selectedSkipDetails.price_before_vat *
+                        (1 + selectedSkipDetails.vat / 100)
+                    )}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div
+                className={`text-sm ${
+                  darkMode ? "text-gray-400" : "text-gray-500"
+                }`}
+              >
+                Select a skip size to continue
+              </div>
+            )}
+          </div>
 
           <button
             onClick={handleContinue}
@@ -218,10 +254,19 @@ export const SkipSelectionPage = () => {
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <span className="font-bold mr-2">
+                <span
+                  className={`font-bold mr-2 ${
+                    darkMode ? "text-blue-300" : "text-blue-600"
+                  }`}
+                >
                   {selectedSkipDetails.size}yd
                 </span>
-                <span className="text-xs mr-1">
+                <span
+                  className={`text-xs mr-1 ${
+                    darkMode ? "text-green-300" : "text-green-600"
+                  }`}
+                >
+                  £
                   {Math.round(
                     selectedSkipDetails.price_before_vat *
                       (1 + selectedSkipDetails.vat / 100)
