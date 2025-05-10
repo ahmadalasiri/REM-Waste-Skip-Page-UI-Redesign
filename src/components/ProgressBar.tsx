@@ -1,3 +1,4 @@
+import { useTheme } from "../context/ThemeContext";
 import type { StepProps } from "../types";
 
 interface ProgressBarProps {
@@ -5,6 +6,8 @@ interface ProgressBarProps {
 }
 
 export const ProgressBar = ({ steps }: ProgressBarProps) => {
+  const { darkMode } = useTheme();
+
   // Define icons for each step
   const getStepIcon = (step: string) => {
     switch (step) {
@@ -15,6 +18,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -30,6 +34,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z" />
             <path
@@ -46,6 +51,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path d="M11.644 1.59a.75.75 0 01.712 0l9.75 5.25a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.712 0l-9.75-5.25a.75.75 0 010-1.32l9.75-5.25z" />
             <path d="M3.265 10.602l7.668 4.129a2.25 2.25 0 002.134 0l7.668-4.13 1.37.739a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.71 0l-9.75-5.25a.75.75 0 010-1.32l1.37-.738z" />
@@ -59,6 +65,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -74,6 +81,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
             <path
@@ -90,6 +98,7 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="w-4 h-4"
+            aria-hidden="true"
           >
             <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
             <path
@@ -105,73 +114,99 @@ export const ProgressBar = ({ steps }: ProgressBarProps) => {
   };
 
   return (
-    <div className="w-full bg-white py-5 border-b">
+    <div
+      className={`w-full py-5 border-b ${
+        darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+      } transition-colors`}
+    >
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-        <div className="flex justify-between items-center">
-          {steps.map((step, index) => (
-            <div
-              key={step.step}
-              className="flex flex-col items-center relative group"
-            >
-              {/* Connection line */}
-              {index > 0 && (
-                <div
-                  className={`absolute top-4 -left-full h-[2px] w-full ${
-                    steps[index - 1].status === "completed"
-                      ? "bg-blue-500"
-                      : "bg-gray-300"
-                  }`}
-                />
-              )}
-
-              {/* Step Circle with Icon */}
-              <div
-                className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full 
-                  ${
-                    step.status === "completed"
-                      ? "bg-blue-500 text-white"
-                      : step.status === "current"
-                      ? "bg-blue-500 text-white"
-                      : "bg-transparent border border-gray-300 text-gray-400"
-                  }`}
+        <nav aria-label="Progress">
+          <ol role="list" className="flex justify-between items-center">
+            {steps.map((step, index) => (
+              <li
+                key={step.step}
+                className="flex flex-col items-center relative group"
               >
-                {step.status === "completed" ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 sm:h-5 sm:w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  getStepIcon(step.step)
+                {/* Connection line */}
+                {index > 0 && (
+                  <div
+                    className={`absolute top-4 -left-full h-[2px] w-full ${
+                      steps[index - 1].status === "completed"
+                        ? darkMode
+                          ? "bg-blue-400"
+                          : "bg-blue-500"
+                        : darkMode
+                        ? "bg-gray-600"
+                        : "bg-gray-300"
+                    }`}
+                    aria-hidden="true"
+                  />
                 )}
-              </div>
 
-              {/* Step Label - Hidden on mobile, visible on hover/focus and larger screens */}
-              <span
-                className={`mt-2 text-xs font-medium hidden sm:inline-block group-hover:inline-block
-                  ${
-                    step.status === "completed" || step.status === "current"
-                      ? "text-gray-900"
-                      : "text-gray-400"
-                  }`}
-              >
-                {step.step}
-              </span>
+                {/* Step Circle with Icon */}
+                <div
+                  className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full 
+                    ${
+                      step.status === "completed"
+                        ? darkMode
+                          ? "bg-blue-400 text-gray-900"
+                          : "bg-blue-500 text-white"
+                        : step.status === "current"
+                        ? darkMode
+                          ? "bg-blue-400 text-gray-900"
+                          : "bg-blue-500 text-white"
+                        : darkMode
+                        ? "bg-transparent border border-gray-600 text-gray-400"
+                        : "bg-transparent border border-gray-300 text-gray-400"
+                    }`}
+                  aria-hidden="true"
+                >
+                  {step.status === "completed" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 sm:h-5 sm:w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    getStepIcon(step.step)
+                  )}
+                </div>
 
-              {/* Mobile tooltip */}
-              <div className="absolute -bottom-8 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:hidden whitespace-nowrap">
-                {step.step}
-              </div>
-            </div>
-          ))}
-        </div>
+                {/* Step Label - Hidden on mobile, visible on hover/focus and larger screens */}
+                <span
+                  className={`mt-2 text-xs font-medium hidden sm:inline-block group-hover:inline-block
+                    ${
+                      step.status === "completed" || step.status === "current"
+                        ? darkMode
+                          ? "text-gray-300"
+                          : "text-gray-900"
+                        : darkMode
+                        ? "text-gray-500"
+                        : "text-gray-400"
+                    }`}
+                  aria-current={step.status === "current" ? "step" : undefined}
+                >
+                  {step.step}
+                </span>
+
+                {/* Mobile tooltip */}
+                <div
+                  className="absolute -bottom-8 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none sm:hidden whitespace-nowrap z-10"
+                  role="tooltip"
+                >
+                  {step.step}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </nav>
       </div>
     </div>
   );

@@ -1,29 +1,15 @@
-import { useState, useEffect } from "react";
 import { ProgressBar } from "../components/ProgressBar";
 import { SkipCard } from "../components/SkipCard";
+import { SkipCardSkeleton } from "../components/SkipCardSkeleton";
 import { useSkips } from "../hooks/useSkips";
+import { useTheme } from "../context/ThemeContext";
 import type { StepProps } from "../types";
 
 export const SkipSelectionPage = () => {
   // In a real app, these would come from route params or context
   const postcode = "NR32";
   const area = "Lowestoft";
-  const [darkMode, setDarkMode] = useState(() => {
-    // Check for saved preference, otherwise default to light mode
-    const saved = localStorage.getItem("darkMode");
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  useEffect(() => {
-    // Save preference to localStorage
-    localStorage.setItem("darkMode", JSON.stringify(darkMode));
-    // Apply dark mode class to html element
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  const { darkMode, toggleDarkMode } = useTheme();
 
   const { skips, loading, error, selectedSkip, selectSkip } = useSkips(
     postcode,
@@ -50,9 +36,12 @@ export const SkipSelectionPage = () => {
     alert("Going back to Waste Type step");
   };
 
+  // Get selected skip details for the mobile summary bar
+  const selectedSkipDetails = skips?.find((skip) => skip.id === selectedSkip);
+
   return (
     <div
-      className={`min-h-screen ${
+      className={`min-h-screen pb-16 sm:pb-0 ${
         darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-800"
       } transition-colors duration-300`}
     >
@@ -97,7 +86,7 @@ export const SkipSelectionPage = () => {
 
           {/* Dark Mode Toggle */}
           <button
-            onClick={() => setDarkMode((prev: boolean) => !prev)}
+            onClick={toggleDarkMode}
             className={`self-end sm:self-auto p-2 rounded-full transition-colors duration-300 ${
               darkMode
                 ? "bg-gray-700 text-yellow-300"
@@ -141,10 +130,12 @@ export const SkipSelectionPage = () => {
           </p>
         </div>
 
-        {/* Loading State */}
+        {/* Loading State - Skeleton UI */}
         {loading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <SkipCardSkeleton key={item} />
+            ))}
           </div>
         )}
 
@@ -176,9 +167,9 @@ export const SkipSelectionPage = () => {
           </div>
         )}
 
-        {/* Navigation Buttons - Fixed at bottom on mobile */}
+        {/* Desktop Navigation Buttons */}
         <div
-          className={`mt-8 sm:mt-10 flex justify-between items-center transition-colors duration-300 ${
+          className={`mt-8 sm:mt-10 hidden sm:flex justify-between items-center transition-colors duration-300 ${
             darkMode
               ? "border-t border-gray-700 pt-4 sm:pt-6"
               : "border-t border-gray-200 pt-4 sm:pt-6"
@@ -186,7 +177,7 @@ export const SkipSelectionPage = () => {
         >
           <button
             onClick={handleBack}
-            className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg border transition-colors duration-300 ${
+            className={`px-4 py-2 text-sm font-medium rounded-lg border transition-colors duration-300 ${
               darkMode
                 ? "bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700"
                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
@@ -198,7 +189,7 @@ export const SkipSelectionPage = () => {
           <button
             onClick={handleContinue}
             disabled={!selectedSkip}
-            className={`px-4 sm:px-6 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all duration-300 ${
+            className={`px-6 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
               !selectedSkip
                 ? darkMode
                   ? "bg-gray-700 text-gray-400 cursor-not-allowed"
@@ -211,6 +202,71 @@ export const SkipSelectionPage = () => {
             Continue to Permit Check
           </button>
         </div>
+      </div>
+
+      {/* Fixed Mobile Navigation Bar */}
+      <div
+        className={`sm:hidden fixed bottom-0 left-0 right-0 ${
+          darkMode
+            ? "bg-gray-800 border-t border-gray-700"
+            : "bg-white border-t border-gray-200"
+        } shadow-lg transition-colors duration-300`}
+      >
+        {selectedSkip && selectedSkipDetails ? (
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <span className="font-bold mr-2">
+                  {selectedSkipDetails.size}yd
+                </span>
+                <span className="text-xs mr-1">
+                  {Math.round(
+                    selectedSkipDetails.price_before_vat *
+                      (1 + selectedSkipDetails.vat / 100)
+                  )}
+                </span>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleBack}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors duration-300 ${
+                    darkMode
+                      ? "bg-gray-700 text-gray-200 border-gray-600"
+                      : "bg-gray-50 text-gray-700 border-gray-300"
+                  }`}
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handleContinue}
+                  className={`px-4 py-1.5 text-xs font-medium rounded-lg ${
+                    darkMode
+                      ? "bg-green-700 text-white"
+                      : "bg-green-600 text-white"
+                  }`}
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex justify-between items-center">
+              <button
+                onClick={handleBack}
+                className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors duration-300 ${
+                  darkMode
+                    ? "bg-gray-700 text-gray-200 border-gray-600"
+                    : "bg-gray-50 text-gray-700 border-gray-300"
+                }`}
+              >
+                Back
+              </button>
+              <span className="text-sm">Select a skip to continue</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

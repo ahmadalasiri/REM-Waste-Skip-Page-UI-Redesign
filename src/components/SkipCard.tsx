@@ -1,4 +1,6 @@
 import type { Skip } from "../types";
+import { StatusBadge } from "./StatusBadge";
+import type { KeyboardEvent } from "react";
 
 interface SkipCardProps {
   skip: Skip;
@@ -20,12 +22,32 @@ export const SkipCard = ({
   const fallbackImageUrl =
     "https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg";
 
+  // Handle keyboard navigation
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelect(skip.id);
+    }
+  };
+
+  // Format features for screen readers
+  const features = [
+    `${skip.hire_period_days} Days Hire`,
+    skip.allowed_on_road ? "Road Placement OK" : "No Road Placement",
+    skip.allows_heavy_waste ? "Heavy Waste Allowed" : "No Heavy Waste",
+  ].join(", ");
+
   return (
     <div
       onClick={() => onSelect(skip.id)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-pressed={isSelected}
+      aria-label={`${skip.size} Yard Skip, £${price}, ${features}`}
       className={`relative flex flex-col overflow-hidden ${
         darkMode ? "bg-gray-800 text-white" : "bg-white"
-      } rounded-xl shadow-md transition-all duration-300 cursor-pointer
+      } rounded-xl shadow-md transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500
         ${
           isSelected
             ? "ring-2 ring-blue-700 transform scale-[1.02] shadow-lg shadow-blue-50"
@@ -73,33 +95,13 @@ export const SkipCard = ({
         </p>
 
         <div className="flex flex-wrap gap-2 mb-3">
-          <div
-            className={`${
-              skip.allowed_on_road
-                ? `bg-emerald-50 ${
-                    darkMode ? "text-emerald-300" : "text-emerald-700"
-                  }`
-                : `bg-amber-50 ${
-                    darkMode ? "text-amber-300" : "text-amber-700"
-                  }`
-            } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-          >
+          <StatusBadge isPositive={skip.allowed_on_road} darkMode={darkMode}>
             {skip.allowed_on_road ? "Road Placement OK" : "No Road Placement"}
-          </div>
+          </StatusBadge>
 
-          <div
-            className={`${
-              skip.allows_heavy_waste
-                ? `bg-emerald-50 ${
-                    darkMode ? "text-emerald-300" : "text-emerald-700"
-                  }`
-                : `bg-amber-50 ${
-                    darkMode ? "text-amber-300" : "text-amber-700"
-                  }`
-            } text-xs sm:text-sm py-1 sm:py-2 px-3 sm:px-4 rounded-full font-medium text-center flex-grow`}
-          >
+          <StatusBadge isPositive={skip.allows_heavy_waste} darkMode={darkMode}>
             {skip.allows_heavy_waste ? "Heavy Waste Allowed" : "No Heavy Waste"}
-          </div>
+          </StatusBadge>
         </div>
 
         <div className="mt-auto">
@@ -122,6 +124,7 @@ export const SkipCard = ({
                   className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     fillRule="evenodd"
