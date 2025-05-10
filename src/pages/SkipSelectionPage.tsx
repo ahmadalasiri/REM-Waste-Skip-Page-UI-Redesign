@@ -137,9 +137,7 @@ export const SkipSelectionPage = () => {
               darkMode ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            Select the skip size that best suits your needs. All our skips
-            include a {skips && skips[0]?.hire_period_days} day hire period and
-            free delivery.
+            Select the skip size that best suits your needs.
           </p>
         </div>
 

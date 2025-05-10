@@ -13,7 +13,7 @@ export const SkipCard = ({
   onSelect,
   darkMode = false,
 }: SkipCardProps) => {
-  // Calculate price including VAT
+  // Calculate price including Value Added Tax (VAT)
   const price = Math.round(skip.price_before_vat * (1 + skip.vat / 100));
 
   // Use the provided URL as fallback image
